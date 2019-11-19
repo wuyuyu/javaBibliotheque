@@ -6,6 +6,7 @@ import java.awt.*;
 public class Main extends JFrame {
     public Main(){
         this.setTitle("Bibliothèque");
+        this.setPreferredSize(new Dimension(600 , 600));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         JPanel myPanel = new JPanel();
         this.setContentPane(myPanel);
@@ -14,19 +15,31 @@ public class Main extends JFrame {
         JButton myBtnExit = new JButton("Exit");
         JTextField myTexField = new JTextField();
         JCheckBox myCheckBox = new JCheckBox();
+        JMenuBar myMenuBar = new JMenuBar();
+        JMenu myMenu = new JMenu();
 
         myTexField.setText("tapez vos texts ici");
-
+        //myMenu.addMenuListener
         GridBagLayout myLayout = new GridBagLayout();
         myPanel.setLayout(myLayout);
         GridBagConstraints myGBC = new GridBagConstraints();
 
+        Dimension dim = new Dimension(70,25);
+        myBtnNOK.setSize(dim);
+        myBtnOK.setSize(dim);
+        myTexField.setPreferredSize(dim);
+        myBtnNOK.setSize(dim);
+        myBtnOK.setSize(dim);
+
+        myBtnExit.setSize(70 , 50);
 
         myGBC.gridx = 0;
         myGBC.gridy = 0;
         myGBC.gridheight = 1;
-        myGBC.gridwidth = 1;
-        myPanel.add(myBtnOK, myGBC);
+        myGBC.gridwidth = 3;
+        myGBC.fill = GridBagConstraints.HORIZONTAL;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myMenuBar, myGBC);
 
         myGBC.gridx = 1;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
@@ -48,7 +61,7 @@ public class Main extends JFrame {
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myCheckBox,myGBC);
 
-        myPanel.
+        //myPanel.
 
     }
 
