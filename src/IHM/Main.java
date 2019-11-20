@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.Enumeration;
 
 public class Main extends JFrame {
+    private File myFile = null;
     public Main(){
         this.setTitle("Bibliothèque");
         this.setPreferredSize(new Dimension(600 , 600));
@@ -54,6 +55,8 @@ public class Main extends JFrame {
         JTable myTable = new JTable(tableauDonnees,tableauEntete);
         JScrollPane scrollPane = new JScrollPane(myTable);
 
+        myTable.setGridColor(Color.black);
+        myTable.setBackground(Color.gray);
 
         myMenuBar.add(myFileMenu);
         myMenuBar.add(myEditMenu);
@@ -136,10 +139,12 @@ public class Main extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-            JFileChooser mychooser = new JFileChooser();
+            JFileChooser myChooser = new JFileChooser();
             FileNameExtensionFilter myfilter = new FileNameExtensionFilter("only .xml files" , ".xml");
-            mychooser.setFileFilter(myfilter);
-            mychooser.showOpenDialog(null);
+            myChooser.setFileFilter(myfilter);
+            myChooser.showOpenDialog(null);
+            File myFile = myChooser.getSelectedFile();
+            processXml(myFile);
             }
 
             @Override
@@ -152,6 +157,10 @@ public class Main extends JFrame {
 
             }
         });
+
+
+        }
+    private void processXml(File myFile){
     }
 
     public static void main(String[] args){
