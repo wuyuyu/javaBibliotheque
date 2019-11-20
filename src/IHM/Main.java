@@ -2,13 +2,18 @@ package IHM;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.Enumeration;
 
 public class Main extends JFrame {
     public Main(){
@@ -20,10 +25,6 @@ public class Main extends JFrame {
         JMenuBar myMenuBar = new JMenuBar();
         this.setJMenuBar(myMenuBar);
         JButton myBtnAdd = new JButton("Add");
-
-
-        //ImageIcon myIcon = new ImageIcon("../resources/pencil.png");
-        //File f = new File("../resources/pencil.png");
         JButton myBtnEdit = new JButton();
         try {
             Image img = ImageIO.read(getClass().getResource("../resources/pencil.png"));
@@ -39,9 +40,21 @@ public class Main extends JFrame {
         JMenu myAboutMenu = new JMenu("About");
         JMenuItem myOpenItem = new JMenuItem("Open");
         JMenuItem myQuitItem = new JMenuItem("Quit");
-        String tableauEnTete [] = {"Titre" , "Auteur"};
-        String tableauDonnees [][] = {{"Harry Potter" , "J.K. Rowling"} , {"Le Crime de l'Orient-Express" , "Agatha Christie"}};
-        JTable myTable = new JTable(tableauDonnees,tableauEnTete);
+
+        GridBagLayout myLayout = new GridBagLayout();
+        myPanel.setLayout(myLayout);
+        GridBagConstraints myGBC = new GridBagConstraints();
+
+
+        Object[][] tableauDonnees  = {
+                {"Harry Potter" , "J.K. Rowling"},
+                {"Le Crime de l'Orient-Express" , "Agatha Christie"}
+        };
+        String [] tableauEntete = {"titre", "auteur"};
+        JTable myTable = new JTable(tableauDonnees,tableauEntete);
+        JScrollPane scrollPane = new JScrollPane(myTable);
+
+
         myMenuBar.add(myFileMenu);
         myMenuBar.add(myEditMenu);
         myMenuBar.add(myAboutMenu);
@@ -49,36 +62,37 @@ public class Main extends JFrame {
         myFileMenu.add(myOpenItem);
         myFileMenu.add(myQuitItem);
 
-        GridBagLayout myLayout = new GridBagLayout();
-        myPanel.setLayout(myLayout);
-        GridBagConstraints myGBC = new GridBagConstraints();
 
-        Dimension dim = new Dimension(50,25);
-        myBtnAdd.setSize(dim);
-        myBtnDelete.setSize(dim);
-        myBtnEdit.setSize(dim);
+        Dimension btnDim = new Dimension(50,25);
+        myBtnAdd.setSize(btnDim);
+        myBtnDelete.setSize(btnDim);
+        myBtnEdit.setSize(btnDim);
         myTable.setPreferredSize(new Dimension(300 ,200));
+
+
 
         myGBC.gridx = 0;
         myGBC.gridy = 0;
+        myGBC.gridheight = 1;
+        myGBC.gridwidth = 1;
+        myPanel.add(scrollPane,myGBC);
+
+        myGBC.gridy = 1;
         myGBC.gridheight = 3;
         myGBC.gridwidth = 1;
-        //myGBC.fill = GridBagConstraints.HORIZONTAL;
-        //myGBC.fill = GridBagConstraints.VERTICAL;
-        myPanel.add(myTable,myGBC);
+        myPanel.add(scrollPane,myGBC);
+
 
         myGBC.gridx = 1;
-        //myGBC.gridy = 0;
         myGBC.gridheight = 1;
-        //myGBC.gridwidth = 1;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnAdd,myGBC);
 
-        myGBC.gridy = 1;
+        myGBC.gridy = 2;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnDelete,myGBC);
 
-        myGBC.gridy = 2;
+        myGBC.gridy = 3;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnEdit,myGBC);
 
