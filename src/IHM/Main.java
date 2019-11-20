@@ -1,7 +1,14 @@
 package IHM;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
 
 public class Main extends JFrame {
     public Main(){
@@ -10,62 +17,128 @@ public class Main extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         JPanel myPanel = new JPanel();
         this.setContentPane(myPanel);
-        JButton myBtnOK = new JButton("Valider");
-        JButton myBtnNOK = new JButton("NOK");
-        JButton myBtnExit = new JButton("Exit");
-        JTextField myTexField = new JTextField();
-        JCheckBox myCheckBox = new JCheckBox();
         JMenuBar myMenuBar = new JMenuBar();
-        JMenu myMenu = new JMenu();
+        this.setJMenuBar(myMenuBar);
+        JButton myBtnAdd = new JButton("Add");
 
+
+        //ImageIcon myIcon = new ImageIcon("../resources/pencil.png");
+        //File f = new File("../resources/pencil.png");
+        JButton myBtnEdit = new JButton();
+        try {
+            Image img = ImageIO.read(getClass().getResource("../resources/pencil.png"));
+            myBtnEdit.setIcon(new ImageIcon(img));
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        JButton myBtnDelete = new JButton("Valider");
+        JTextField myTexField = new JTextField();
+        JMenu myFileMenu = new JMenu("File");
+        JMenu myEditMenu = new JMenu("Edit");
+        JMenu myAboutMenu = new JMenu("About");
+        JMenuItem myOpenItem = new JMenuItem("Open");
+        JMenuItem myQuitItem = new JMenuItem("Quit");
+        String tableauEnTete [] = {"Titre" , "Auteur"};
+        String tableauDonnees [][] = {{"Harry Potter" , "J.K. Rowling"} , {"Le Crime de l'Orient-Express" , "Agatha Christie"}};
+        JTable myTable = new JTable(tableauDonnees,tableauEnTete);
+        myMenuBar.add(myFileMenu);
+        myMenuBar.add(myEditMenu);
+        myMenuBar.add(myAboutMenu);
         myTexField.setText("tapez vos texts ici");
-        //myMenu.addMenuListener
+        myFileMenu.add(myOpenItem);
+        myFileMenu.add(myQuitItem);
+
         GridBagLayout myLayout = new GridBagLayout();
         myPanel.setLayout(myLayout);
         GridBagConstraints myGBC = new GridBagConstraints();
 
-        Dimension dim = new Dimension(70,25);
-        myBtnNOK.setSize(dim);
-        myBtnOK.setSize(dim);
-        myTexField.setPreferredSize(dim);
-        myBtnNOK.setSize(dim);
-        myBtnOK.setSize(dim);
-
-        myBtnExit.setSize(70 , 50);
+        Dimension dim = new Dimension(50,25);
+        myBtnAdd.setSize(dim);
+        myBtnDelete.setSize(dim);
+        myBtnEdit.setSize(dim);
+        myTable.setPreferredSize(new Dimension(300 ,200));
 
         myGBC.gridx = 0;
         myGBC.gridy = 0;
-        myGBC.gridheight = 1;
-        myGBC.gridwidth = 3;
-        myGBC.fill = GridBagConstraints.HORIZONTAL;
-        myGBC.gridwidth = GridBagConstraints.REMAINDER;
-        myPanel.add(myMenuBar, myGBC);
-
-        myGBC.gridx = 1;
-        myGBC.gridwidth = GridBagConstraints.REMAINDER;
-        myPanel.add(myBtnNOK,myGBC);
-
-        myGBC.gridx = 0;
-        myGBC.gridy = 1;
-        myGBC.gridheight = 2;
+        myGBC.gridheight = 3;
         myGBC.gridwidth = 1;
-        myGBC.fill = GridBagConstraints.VERTICAL;
-        myPanel.add(myBtnExit,myGBC);
+        //myGBC.fill = GridBagConstraints.HORIZONTAL;
+        //myGBC.fill = GridBagConstraints.VERTICAL;
+        myPanel.add(myTable,myGBC);
 
         myGBC.gridx = 1;
+        //myGBC.gridy = 0;
         myGBC.gridheight = 1;
+        //myGBC.gridwidth = 1;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
-        myPanel.add(myTexField,myGBC);
+        myPanel.add(myBtnAdd,myGBC);
+
+        myGBC.gridy = 1;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myBtnDelete,myGBC);
 
         myGBC.gridy = 2;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
-        myPanel.add(myCheckBox,myGBC);
+        myPanel.add(myBtnEdit,myGBC);
 
-        //myPanel.
+        myQuitItem.addMouseListener(new MouseListener(){
 
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            System.exit(0);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        myOpenItem.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            JFileChooser mychooser = new JFileChooser();
+            FileNameExtensionFilter myfilter = new FileNameExtensionFilter("only .xml files" , ".xml");
+            mychooser.setFileFilter(myfilter);
+            mychooser.showOpenDialog(null);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
-
-
 
     public static void main(String[] args){
         Main myWindow = new Main();
