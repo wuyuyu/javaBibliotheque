@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -102,6 +103,11 @@ public class Main extends JFrame {
         JTable myTable = new JTable(tableauDonnees,tableauEntete);
         JScrollPane scrollPane = new JScrollPane(myTable);
 
+        myTable.setPreferredScrollableViewportSize(new Dimension(450,200));
+        myTable.setFillsViewportHeight(true);
+
+
+
         myTable.setGridColor(Color.black);
         //myTable.setBackground(Color.gray);
 
@@ -126,7 +132,8 @@ public class Main extends JFrame {
         myRow.setPreferredSize(txtDim);
         myResume.setPreferredSize(new Dimension(90 , 150));
 
-        myTable.setPreferredSize(new Dimension(200 ,150));
+        myTable.setPreferredSize(new Dimension(200 ,500));
+
         myTable.setDefaultRenderer(Object.class, new MyCellRenderer(myTable.getDefaultRenderer(Object.class)));
 
         myGBC.gridx = 0;
