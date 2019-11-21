@@ -1,5 +1,6 @@
 package IHM;
 
+import com.sun.codemodel.JForLoop;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -23,6 +24,9 @@ import java.util.Enumeration;
 
 public class Main extends JFrame {
     private File myFile = null;
+    private final Object[][] tableauDonnees;
+    private final String [] tableauEntete = {"Titre" , "Auteur" , "Résumé" , "Colonne" , "Rangée" , "Parution"};
+
     public Main(){
         this.setTitle("Bibliothèque");
         //this.setPreferredSize(new Dimension(600 , 600));
@@ -77,7 +81,7 @@ public class Main extends JFrame {
         GridBagConstraints myGBC = new GridBagConstraints();
 
 
-        Object[][] tableauDonnees  = {
+        tableauDonnees  = new Object[][]{
                 {"Harry Potter" , "J.K. Rowling" ,"***" , "1" , "1" ,  "1997"},
                 {"Le Crime de l'Orient-Express" , "Agatha Christie" , "***" , "5" , "2" , "1934"},
                 {"L'art de la guerre" , "Tzu Sun" , "***" , "6" , "8" , "2008"},
@@ -99,7 +103,7 @@ public class Main extends JFrame {
                 {"Sapiens" , "Yuval Noah Harari" , "***" , "9" , "1" , "2011"},
                 {"Astérix" , "Albert Uderzo" , "***" , "2" , "22" , "2019"}
         };
-        String [] tableauEntete = {"Titre" , "Auteur" , "Résumé" , "Colonne" , "Rangée" , "Parution"};
+
         JTable myTable = new JTable(tableauDonnees,tableauEntete);
         JScrollPane scrollPane = new JScrollPane(myTable);
 
@@ -203,11 +207,6 @@ public class Main extends JFrame {
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add (myBtnValider , myGBC);
 
-        /*myGBC.gridy = 4;
-        myGBC.gridwidth = GridBagConstraints.REMAINDER;
-        myPanel.add(myBtnEdit,myGBC);
-
-         */
 
         myQuitItem.addMouseListener(new MouseListener(){
 
@@ -268,9 +267,55 @@ public class Main extends JFrame {
             }
         });
 
+        myTable.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                getRowCount();
+                JFileChooser myChooser = new JFileChooser();
+                FileNameExtensionFilter myfilter = new FileNameExtensionFilter("only .xml files" , ".xml");
+                myChooser.setFileFilter(myfilter);
+                myChooser.showOpenDialog(null);
+                File myFile = myChooser.getSelectedFile();
+                processXml(myFile);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         }
 
+
+    public int getRowCount() {
+        return tableauDonnees.length;
+    }
+    public int getColumnCount() {
+        return tableauEntete.length;
+    }
+    public String getColumnName(int columnIndex) {
+        return tableauEntete[columnIndex];
+    }
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        return tableauDonnees[rowIndex][columnIndex];
+    }
 
 
     private void processXml(File myFile){
