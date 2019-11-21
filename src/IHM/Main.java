@@ -24,7 +24,8 @@ public class Main extends JFrame {
     private File myFile = null;
     public Main(){
         this.setTitle("Bibliothèque");
-        this.setPreferredSize(new Dimension(600 , 600));
+        //this.setPreferredSize(new Dimension(600 , 600));
+        this.setMinimumSize(new Dimension(800 , 800));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         JPanel myPanel = new JPanel();
         this.setContentPane(myPanel);
@@ -32,6 +33,29 @@ public class Main extends JFrame {
         this.setJMenuBar(myMenuBar);
         JButton myBtnAdd = new JButton("Add");
         JButton myBtnEdit = new JButton();
+
+        JTextField myTitle = new JTextField();
+        JLabel title = new JLabel("Titre :");
+
+        JTextField myAuteur = new JTextField();
+        JLabel auteur = new JLabel("Auteur :");
+
+        JTextField myParution = new JTextField();
+        JLabel parution = new JLabel("Parution :");
+
+        JTextField myColumn = new JTextField();
+        JLabel column = new JLabel("Colonne :");
+
+        JTextField myRow = new JTextField();
+        JLabel row = new JLabel("Rangée :");
+
+        JTextArea myResume = new JTextArea();
+        JLabel resume = new JLabel("Résumé :");
+
+        JButton myBtnValider= new JButton("Valider");
+
+
+
         try {
             Image img = ImageIO.read(getClass().getResource("../resources/pencil.png"));
             myBtnEdit.setIcon(new ImageIcon(img));
@@ -39,7 +63,7 @@ public class Main extends JFrame {
             System.out.println(ex);
         }
 
-        JButton myBtnDelete = new JButton("Valider");
+        JButton myBtnDelete = new JButton("Supprimer");
         JTextField myTexField = new JTextField();
         JMenu myFileMenu = new JMenu("File");
         JMenu myEditMenu = new JMenu("Edit");
@@ -54,14 +78,32 @@ public class Main extends JFrame {
 
         Object[][] tableauDonnees  = {
                 {"Harry Potter" , "J.K. Rowling" ,"***" , "1" , "1" ,  "1997"},
-                {"Le Crime de l'Orient-Express" , "Agatha Christie" , "***" , "5" , "2" , "1934"}
+                {"Le Crime de l'Orient-Express" , "Agatha Christie" , "***" , "5" , "2" , "1934"},
+                {"L'art de la guerre" , "Tzu Sun" , "***" , "6" , "8" , "2008"},
+                {"Sapiens" , "Yuval Noah Harari" , "***" , "9" , "1" , "2011"},
+                {"Astérix" , "Albert Uderzo" , "***" , "2" , "22" , "2019"},
+                {"Harry Potter" , "J.K. Rowling" ,"***" , "1" , "1" ,  "1997"},
+                {"Le Crime de l'Orient-Express" , "Agatha Christie" , "***" , "5" , "2" , "1934"},
+                {"L'art de la guerre" , "Tzu Sun" , "***" , "6" , "8" , "2008"},
+                {"Sapiens" , "Yuval Noah Harari" , "***" , "9" , "1" , "2011"},
+                {"Astérix" , "Albert Uderzo" , "***" , "2" , "22" , "2019"},
+                {"Harry Potter" , "J.K. Rowling" ,"***" , "1" , "1" ,  "1997"},
+                {"Le Crime de l'Orient-Express" , "Agatha Christie" , "***" , "5" , "2" , "1934"},
+                {"L'art de la guerre" , "Tzu Sun" , "***" , "6" , "8" , "2008"},
+                {"Sapiens" , "Yuval Noah Harari" , "***" , "9" , "1" , "2011"},
+                {"Astérix" , "Albert Uderzo" , "***" , "2" , "22" , "2019"},
+                {"Harry Potter" , "J.K. Rowling" ,"***" , "1" , "1" ,  "1997"},
+                {"Le Crime de l'Orient-Express" , "Agatha Christie" , "***" , "5" , "2" , "1934"},
+                {"L'art de la guerre" , "Tzu Sun" , "***" , "6" , "8" , "2008"},
+                {"Sapiens" , "Yuval Noah Harari" , "***" , "9" , "1" , "2011"},
+                {"Astérix" , "Albert Uderzo" , "***" , "2" , "22" , "2019"}
         };
-        String [] tableauEntete = {"Titre" , "Auteur" , "Résumé" , "Colonne" , "Rangée" , "Date de parution"};
+        String [] tableauEntete = {"Titre" , "Auteur" , "Résumé" , "Colonne" , "Rangée" , "Parution"};
         JTable myTable = new JTable(tableauDonnees,tableauEntete);
         JScrollPane scrollPane = new JScrollPane(myTable);
 
         myTable.setGridColor(Color.black);
-        myTable.setBackground(Color.gray);
+        //myTable.setBackground(Color.gray);
 
         myMenuBar.add(myFileMenu);
         myMenuBar.add(myEditMenu);
@@ -71,31 +113,94 @@ public class Main extends JFrame {
         myFileMenu.add(myQuitItem);
 
 
-        Dimension btnDim = new Dimension(70,45);
+        Dimension btnDim = new Dimension(90,45);
         myBtnAdd.setPreferredSize(btnDim);
         myBtnDelete.setPreferredSize(btnDim);
+        myBtnValider.setPreferredSize(btnDim);
         myBtnEdit.setPreferredSize(btnDim);
-        myTable.setPreferredSize(new Dimension(20 ,200));
+        Dimension txtDim = new Dimension(90 , 30);
+        myTitle.setPreferredSize(txtDim);
+        myAuteur.setPreferredSize(txtDim);
+        myParution.setPreferredSize(txtDim);
+        myColumn.setPreferredSize(txtDim);
+        myRow.setPreferredSize(txtDim);
+        myResume.setPreferredSize(new Dimension(90 , 150));
+
+        myTable.setPreferredSize(new Dimension(200 ,150));
         myTable.setDefaultRenderer(Object.class, new MyCellRenderer(myTable.getDefaultRenderer(Object.class)));
 
         myGBC.gridx = 0;
         myGBC.gridy = 0;
-        myGBC.gridheight = 10;
-        myGBC.gridwidth = 1;
+        myGBC.gridheight = 11;
+        myGBC.gridwidth = 6;
         myPanel.add(scrollPane,myGBC);
 
-        myGBC.gridx = 1;
+        myGBC.gridy = 12;
         myGBC.gridheight = 2;
-        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myGBC.gridwidth = 1;
         myPanel.add(myBtnAdd,myGBC);
 
-        myGBC.gridy = 2;
+        myGBC.gridx = 1;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnDelete,myGBC);
 
+        myGBC.gridx = 6;
+        myGBC.gridy = 0;
+        myGBC.gridheight = 1;
+        myGBC.gridwidth = 1;
+        myPanel.add(title , myGBC);
+
+        myGBC.gridy = 1;
+        myPanel.add(auteur , myGBC);
+
+        myGBC.gridy = 2;
+        myPanel.add(parution , myGBC);
+
+        myGBC.gridy = 3;
+        myPanel.add(column , myGBC);
+
+        myGBC.gridy = 4;
+        myPanel.add(row , myGBC);
+
+        myGBC.gridy = 5;
+        myPanel.add(resume , myGBC);
+
+        myGBC.gridx = 7;
+        myGBC.gridy = 0;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myTitle , myGBC);
+
+        myGBC.gridy = 1;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myAuteur , myGBC);
+
+        myGBC.gridy = 2;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myParution , myGBC);
+
+        myGBC.gridy = 3;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myColumn , myGBC);
+
         myGBC.gridy = 4;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myRow , myGBC);
+
+        myGBC.gridy = 5;
+        myGBC.gridheight = 5;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add(myResume , myGBC);
+
+        myGBC.gridy = 10;
+        myGBC.gridheight = 1;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
+        myPanel.add (myBtnValider , myGBC);
+
+        /*myGBC.gridy = 4;
+        myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnEdit,myGBC);
+
+         */
 
         myQuitItem.addMouseListener(new MouseListener(){
 
