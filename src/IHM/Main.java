@@ -71,7 +71,7 @@ public class Main extends JFrame {
         myBtnDelete.setSize(btnDim);
         myBtnEdit.setSize(btnDim);
         myTable.setPreferredSize(new Dimension(300 ,200));
-
+        myTable.setDefaultRenderer(Object.class, new MyCellRenderer(myTable.getDefaultRenderer(Object.class)));
 
 
         myGBC.gridx = 0;
