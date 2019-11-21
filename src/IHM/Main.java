@@ -1,5 +1,8 @@
 package IHM;
 
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.TableColumnModelListener;
@@ -7,6 +10,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -153,13 +158,71 @@ public class Main extends JFrame {
 
 
         }
+
+
+
     private void processXml(File myFile){
+        
+        try {
+            //Obtenir la configuration du sax parser
+            SAXParserFactory spfactory = SAXParserFactory.newInstance();
+            //Obtenir une instance de l'objet parser
+            SAXParser saxParser = spfactory.newSAXParser();
+
+            DefaultHandler handler = new DefaultHandler() {
+
+                boolean titre = false;
+                boolean auteur = false;
+                boolean presentation = false;
+                boolean parution = false;
+                boolean colonne = false;
+                boolean rangee = false;
+
+                //cette méthode est invoquée à chaque fois que parser rencontre
+                 // une balise fermante '>'
+                public void endElement(String uri, String localName,
+                                       String qName) throws SAXException {
+                    if (qName.equalsIgnoreCase("Titre")) {
+                        titre = false;
+                    }
+                    if (qName.equalsIgnoreCase("auteur")) {
+                        auteur = false;
+                    }
+                    if (qName.equalsIgnoreCase("presentation")) {
+                        presentation = false;
+                    }
+                    if (qName.equalsIgnoreCase("parution")) {
+                        parution = false;
+                    }
+                    if (qName.equalsIgnoreCase("colonne")) {
+                        colonne = false;
+                    }
+                    if (qName.equalsIgnoreCase("rangee")) {
+                        rangee = false;
+                    }
+                }
+            };
+
+            saxParser.parse("../resources/Biblio.xml", handler);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
     }
+
+
+
 
     public static void main(String[] args){
         Main myWindow = new Main();
         myWindow.pack();
         myWindow.setVisible(true);
+        System.out.println();
     }
 
 }
