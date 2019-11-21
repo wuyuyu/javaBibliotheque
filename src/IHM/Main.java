@@ -48,10 +48,10 @@ public class Main extends JFrame {
 
 
         Object[][] tableauDonnees  = {
-                {"Harry Potter" , "J.K. Rowling"},
-                {"Le Crime de l'Orient-Express" , "Agatha Christie"}
+                {"Harry Potter" , "J.K. Rowling" ,"***" , "1" , "1" ,  "1997"},
+                {"Le Crime de l'Orient-Express" , "Agatha Christie" , "***" , "5" , "2" , "1934"}
         };
-        String [] tableauEntete = {"titre", "auteur"};
+        String [] tableauEntete = {"Titre" , "Auteur" , "Résumé" , "Colonne" , "Rangée" , "Date de parution"};
         JTable myTable = new JTable(tableauDonnees,tableauEntete);
         JScrollPane scrollPane = new JScrollPane(myTable);
 
@@ -66,28 +66,21 @@ public class Main extends JFrame {
         myFileMenu.add(myQuitItem);
 
 
-        Dimension btnDim = new Dimension(50,25);
-        myBtnAdd.setSize(btnDim);
-        myBtnDelete.setSize(btnDim);
-        myBtnEdit.setSize(btnDim);
-        myTable.setPreferredSize(new Dimension(300 ,200));
+        Dimension btnDim = new Dimension(70,45);
+        myBtnAdd.setPreferredSize(btnDim);
+        myBtnDelete.setPreferredSize(btnDim);
+        myBtnEdit.setPreferredSize(btnDim);
+        myTable.setPreferredSize(new Dimension(20 ,200));
         myTable.setDefaultRenderer(Object.class, new MyCellRenderer(myTable.getDefaultRenderer(Object.class)));
-
 
         myGBC.gridx = 0;
         myGBC.gridy = 0;
-        myGBC.gridheight = 1;
+        myGBC.gridheight = 10;
         myGBC.gridwidth = 1;
         myPanel.add(scrollPane,myGBC);
-
-        myGBC.gridy = 1;
-        myGBC.gridheight = 3;
-        myGBC.gridwidth = 1;
-        myPanel.add(scrollPane,myGBC);
-
 
         myGBC.gridx = 1;
-        myGBC.gridheight = 1;
+        myGBC.gridheight = 2;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnAdd,myGBC);
 
@@ -95,7 +88,7 @@ public class Main extends JFrame {
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnDelete,myGBC);
 
-        myGBC.gridy = 3;
+        myGBC.gridy = 4;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add(myBtnEdit,myGBC);
 
