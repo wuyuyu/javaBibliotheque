@@ -524,6 +524,7 @@ public class Main extends JFrame {
             };
             saxParser.parse(myFile, handler);
 
+
         } catch (Exception e) {
             e.printStackTrace();
         }

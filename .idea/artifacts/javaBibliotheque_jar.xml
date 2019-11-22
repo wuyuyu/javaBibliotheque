@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="javaBibliotheque:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/javaBibliotheque_jar</output-path>
+    <root id="archive" name="javaBibliotheque.jar">
+      <element id="module-output" name="javaBibliotheque" />
+      <element id="library" level="project" name="jaxb-core" />
+      <element id="library" level="project" name="jaxb-jxc" />
+      <element id="library" level="project" name="jaxb-xjc" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/Archive/JAXB Standalone/jaxb-ri/lib/jaxb-api.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/Archive/JAXB Standalone/jaxb-ri/lib/jaxb-core.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/Archive/JAXB Standalone/jaxb-ri/lib/jaxb-impl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/Archive/JAXB Standalone/jaxb-ri/lib/jaxb-jxc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/Archive/JAXB Standalone/jaxb-ri/lib/jaxb-xjc.jar" path-in-jar="/" />
+      <element id="library" level="project" name="jaxb-impl" />
+    </root>
+  </artifact>
+</component>
