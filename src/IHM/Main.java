@@ -1,5 +1,6 @@
 package IHM;
 
+import XSD.Bibliotheque;
 import com.sun.codemodel.JForLoop;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -14,6 +15,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.TableView;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.awt.*;
@@ -22,8 +26,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.Calendar;
-import java.util.Enumeration;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 public class Main extends JFrame {
     private File myFile = null;
@@ -107,7 +112,11 @@ public class Main extends JFrame {
                 {"Astérix" , "Albert Uderzo" , "***" , "2" , "22" , "2019"}
         };
 
-        JTable myTable = new JTable(tableauDonnees,tableauEntete);
+        //JTable myTable = new JTable(tableauDonnees,tableauEntete);
+
+        DefaultTableModel model = new DefaultTableModel(tableauDonnees,tableauEntete);
+
+        JTable myTable = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(myTable);
 
         myTable.setPreferredScrollableViewportSize(new Dimension(450,200));
@@ -229,6 +238,70 @@ public class Main extends JFrame {
         myPanel.add (myBtnValider , myGBC);
 
 
+
+
+        myBtnValider.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                try {
+                    int ligneSelectionnee = myTable.getSelectedRow();
+                    int year = Calendar.getInstance().get(Calendar.YEAR);
+
+                    myTable.setValueAt(myColumn.getText(), ligneSelectionnee, 3);
+                    myTable.setValueAt(myRow.getText(), ligneSelectionnee, 4);
+                    myTable.setValueAt(myParution.getText(), ligneSelectionnee, 5);
+
+
+                    Calendar c = Calendar.getInstance();
+                    int anne = c.get(Calendar.YEAR);
+
+                    if (Integer.parseInt(myColumn.getText()) > 0 && Integer.parseInt(myColumn.getText()) < 8) {
+                        myTable.setValueAt(myColumn.getText(), ligneSelectionnee, 3);
+                    } else {
+                        JOptionPane myPoPop = new JOptionPane();
+                        myPoPop.showMessageDialog(null, "Selectionner un chiffre entre 1 et 7");
+                    }
+
+                    if (Integer.parseInt(myRow.getText()) > 0 && Integer.parseInt(myRow.getText()) < 6) {
+                        myTable.setValueAt(myRow.getText(), ligneSelectionnee, 4);
+                    } else {
+                        JOptionPane myPoPop = new JOptionPane();
+                        myPoPop.showMessageDialog(null, "Selectionner un chiffre entre 1 et 5");
+                    }
+
+                    if (Integer.parseInt(myParution.getText()) < anne) {
+                        myTable.setValueAt(myParution.getText(), ligneSelectionnee, 4);
+                    } else {
+                        JOptionPane myPoPop = new JOptionPane();
+                        myPoPop.showMessageDialog(null, "La date de parution ne pourra pas être supérieure à l’année du système");
+                    }
+                } catch (Exception ext) {
+                    JOptionPane myPoPop = new JOptionPane();
+                    ImageIcon img2 = new ImageIcon("resources/file.png");
+                    myPoPop.showMessageDialog(null, "probléme systéme", "WARNING",myPoPop.ERROR_MESSAGE,img2);
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         myQuitItem.addMouseListener(new MouseListener(){
 
             @Override
@@ -237,7 +310,7 @@ public class Main extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-            System.exit(0);
+                System.exit(0);
             }
 
             @Override
@@ -269,12 +342,12 @@ public class Main extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-            JFileChooser myChooser = new JFileChooser();
-            FileNameExtensionFilter myfilter = new FileNameExtensionFilter("only .xml files" , ".xml");
-            myChooser.setFileFilter(myfilter);
-            myChooser.showOpenDialog(null);
-            File myFile = myChooser.getSelectedFile();
-            processXml(myFile);
+                JFileChooser myChooser = new JFileChooser();
+                FileNameExtensionFilter myfilter = new FileNameExtensionFilter("only .xml files" , "xml");
+                myChooser.setFileFilter(myfilter);
+                myChooser.showOpenDialog(null);
+                File myFile = myChooser.getSelectedFile();
+                processXml(myFile);
             }
 
             @Override
@@ -288,7 +361,7 @@ public class Main extends JFrame {
             }
         });
 
-        myBtnValider.addMouseListener(new MouseListener() {
+        myBtnDelete.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -296,45 +369,14 @@ public class Main extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                int selectedRow = myTable.getSelectedRow();
+                model.removeRow(selectedRow);
 
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                int ligneSelectionnee = myTable.getSelectedRow();
-                int year = Calendar.getInstance().get(Calendar.YEAR);
 
-                myTable.setValueAt(myColumn.getText(),ligneSelectionnee,3);
-                myTable.setValueAt(myRow.getText(),ligneSelectionnee,4);
-                myTable.setValueAt(myParution.getText(),ligneSelectionnee,5);
-
-
-                Calendar c = Calendar.getInstance();
-                int anne = c.get(Calendar.YEAR);
-
-                if(Integer.parseInt(myColumn.getText()) > 0 && Integer.parseInt(myColumn.getText()) < 8){
-                    myTable.setValueAt(myColumn.getText(),ligneSelectionnee, 3);
-                }
-                else {
-                    JOptionPane myPoPop = new JOptionPane();
-                    myPoPop.showMessageDialog(null,"Selectionner un chiffre entre 1 et 7");
-                }
-
-                if(Integer.parseInt(myRow.getText()) > 0 && Integer.parseInt(myRow.getText()) < 6){
-                    myTable.setValueAt(myRow.getText(),ligneSelectionnee, 4);
-                }
-                else {
-                    JOptionPane myPoPop = new JOptionPane();
-                    myPoPop.showMessageDialog(null,"Selectionner un chiffre entre 1 et 5");
-                }
-
-                if(Integer.parseInt(myParution.getText()) < anne){
-                    myTable.setValueAt(myParution.getText(),ligneSelectionnee, 4);
-                }
-                else {
-                    JOptionPane myPoPop = new JOptionPane();
-                    myPoPop.showMessageDialog(null,"La date de parution ne pourra pas être supérieure à l’année du système");
-                }
             }
 
             @Override
@@ -347,8 +389,37 @@ public class Main extends JFrame {
 
             }
         });
+        myBtnAdd.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
-        }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                model.addRow(new TableView.TableRow[]{});
+
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+    }
+
+
 
 
 
@@ -368,7 +439,7 @@ public class Main extends JFrame {
 
 
     private void processXml(File myFile){
-        
+
         try {
             //Obtenir la configuration du sax parser
             SAXParserFactory spfactory = SAXParserFactory.newInstance();
@@ -407,10 +478,9 @@ public class Main extends JFrame {
                         rangee = false;
                     }
                 }
+
             };
-
-            saxParser.parse("../resources/Biblio.xml", handler);
-
+            saxParser.parse(myFile, handler);
 
         } catch (Exception e) {
             e.printStackTrace();
