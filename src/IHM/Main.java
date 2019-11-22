@@ -308,6 +308,10 @@ public class Main extends JFrame {
                 myTable.setValueAt(myRow.getText(),ligneSelectionnee,4);
                 myTable.setValueAt(myParution.getText(),ligneSelectionnee,5);
 
+
+                Calendar c = Calendar.getInstance();
+                int anne = c.get(Calendar.YEAR);
+
                 if(Integer.parseInt(myColumn.getText()) > 0 && Integer.parseInt(myColumn.getText()) < 8){
                     myTable.setValueAt(myColumn.getText(),ligneSelectionnee, 3);
                 }
@@ -316,7 +320,21 @@ public class Main extends JFrame {
                     myPoPop.showMessageDialog(null,"Selectionner un chiffre entre 1 et 7");
                 }
 
+                if(Integer.parseInt(myRow.getText()) > 0 && Integer.parseInt(myRow.getText()) < 6){
+                    myTable.setValueAt(myRow.getText(),ligneSelectionnee, 4);
+                }
+                else {
+                    JOptionPane myPoPop = new JOptionPane();
+                    myPoPop.showMessageDialog(null,"Selectionner un chiffre entre 1 et 5");
+                }
 
+                if(Integer.parseInt(myParution.getText()) < anne){
+                    myTable.setValueAt(myParution.getText(),ligneSelectionnee, 4);
+                }
+                else {
+                    JOptionPane myPoPop = new JOptionPane();
+                    myPoPop.showMessageDialog(null,"La date de parution ne pourra pas être supérieure à l’année du système");
+                }
             }
 
             @Override
