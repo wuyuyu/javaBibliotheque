@@ -288,7 +288,7 @@ public class Main extends JFrame {
                 } catch (Exception ext) {
                     JOptionPane myPoPop = new JOptionPane();
                     ImageIcon img2 = new ImageIcon("resources/file.png");
-                    myPoPop.showMessageDialog(null, "probléme systéme", "WARNING",myPoPop.ERROR_MESSAGE,img2);
+                    myPoPop.showMessageDialog(null, "❌系统错误，请重新输入❌");
                 }
             }
 
@@ -369,8 +369,14 @@ public class Main extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
+
                 int selectedRow = myTable.getSelectedRow();
-                model.removeRow(selectedRow);
+                if(selectedRow<0||selectedRow>myTable.getRowCount()){
+                    JOptionPane myPoPop1 = new JOptionPane();
+                    myPoPop1.showMessageDialog(null, "Aucune ligne selectionnée");
+                }else {
+                    model.removeRow(selectedRow);
+                }
 
             }
 
