@@ -33,7 +33,7 @@ import java.util.List;
 public class Main extends JFrame {
     private File myFile = null;
     private final Object[][] tableauDonnees;
-    private final String [] tableauEntete = {"Titre" , "Auteur" , "Résumé" , "Colonne" , "Rangée" , "Parution"};
+    private final String [] tableauEntete = {"Titre" , "Auteur" , "Présentation" , "Colonne" , "Rangée" , "Parution"};
 
     public Main(){
         this.setTitle("Bibliothèque");
@@ -62,19 +62,26 @@ public class Main extends JFrame {
         JTextField myRow = new JTextField();
         JLabel row = new JLabel("Rangée :");
 
-        JTextArea myResume = new JTextArea();
-        JLabel resume = new JLabel("Résumé :");
+        JTextArea myPresentation = new JTextArea();
+        JLabel presentation = new JLabel("Présentation :");
 
-        JButton myBtnValider= new JButton("Valider");
-
-
+        JButton myBtnValider= new JButton();
 
         try {
+            Image img = ImageIO.read(getClass().getResource("../resources/check.png"));
+            myBtnValider.setIcon(new ImageIcon(img));
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+
+
+        /*try {
             Image img = ImageIO.read(getClass().getResource("../resources/pencil.png"));
             myBtnEdit.setIcon(new ImageIcon(img));
         } catch (Exception ex) {
             System.out.println(ex);
-        }
+        }*/
 
         JButton myBtnDelete = new JButton("Supprimer");
         JTextField myTexField = new JTextField();
@@ -134,7 +141,7 @@ public class Main extends JFrame {
                 myParution.setText(myTable.getValueAt(lingeSelectionne, 5).toString());
                 myColumn.setText(myTable.getValueAt(lingeSelectionne, 3).toString());
                 myRow.setText(myTable.getValueAt(lingeSelectionne, 4).toString());
-                myResume.setText(myTable.getValueAt(lingeSelectionne, 2).toString());
+                myPresentation.setText(myTable.getValueAt(lingeSelectionne, 2).toString());
 
 
 
@@ -164,7 +171,7 @@ public class Main extends JFrame {
         myParution.setPreferredSize(txtDim);
         myColumn.setPreferredSize(txtDim);
         myRow.setPreferredSize(txtDim);
-        myResume.setPreferredSize(new Dimension(90 , 150));
+        myPresentation.setPreferredSize(new Dimension(90 , 150));
 
         myTable.setPreferredSize(new Dimension(200 ,500));
 
@@ -204,7 +211,7 @@ public class Main extends JFrame {
         myPanel.add(row , myGBC);
 
         myGBC.gridy = 5;
-        myPanel.add(resume , myGBC);
+        myPanel.add(presentation , myGBC);
 
         myGBC.gridx = 7;
         myGBC.gridy = 0;
@@ -230,12 +237,14 @@ public class Main extends JFrame {
         myGBC.gridy = 5;
         myGBC.gridheight = 5;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
-        myPanel.add(myResume , myGBC);
+        myPanel.add(myPresentation , myGBC);
 
         myGBC.gridy = 10;
         myGBC.gridheight = 1;
         myGBC.gridwidth = GridBagConstraints.REMAINDER;
         myPanel.add (myBtnValider , myGBC);
+
+
 
 
 
@@ -257,30 +266,30 @@ public class Main extends JFrame {
                     int ligneSelectionnee = myTable.getSelectedRow();
                     int year = Calendar.getInstance().get(Calendar.YEAR);
 
-                    myTable.setValueAt(myColumn.getText(), ligneSelectionnee, 3);
-                    myTable.setValueAt(myRow.getText(), ligneSelectionnee, 4);
-                    myTable.setValueAt(myParution.getText(), ligneSelectionnee, 5);
+                    myTable.setValueAt(myTitle.getText(), ligneSelectionnee, 0);
+                    myTable.setValueAt(myAuteur.getText(), ligneSelectionnee, 1);
+                    myTable.setValueAt(myPresentation.getText(), ligneSelectionnee, 2);
 
 
                     Calendar c = Calendar.getInstance();
-                    int anne = c.get(Calendar.YEAR);
+                    int annee = c.get(Calendar.YEAR);
 
                     if (Integer.parseInt(myColumn.getText()) > 0 && Integer.parseInt(myColumn.getText()) < 8) {
                         myTable.setValueAt(myColumn.getText(), ligneSelectionnee, 3);
                     } else {
                         JOptionPane myPoPop = new JOptionPane();
-                        myPoPop.showMessageDialog(null, "Selectionner un chiffre entre 1 et 7");
+                        myPoPop.showMessageDialog(null, "Selectionner un chiffre de colonne entre 1 et 7");
                     }
 
                     if (Integer.parseInt(myRow.getText()) > 0 && Integer.parseInt(myRow.getText()) < 6) {
                         myTable.setValueAt(myRow.getText(), ligneSelectionnee, 4);
                     } else {
                         JOptionPane myPoPop = new JOptionPane();
-                        myPoPop.showMessageDialog(null, "Selectionner un chiffre entre 1 et 5");
+                        myPoPop.showMessageDialog(null, "Selectionner un chiffre de rangée entre 1 et 5");
                     }
 
-                    if (Integer.parseInt(myParution.getText()) < anne) {
-                        myTable.setValueAt(myParution.getText(), ligneSelectionnee, 4);
+                    if (Integer.parseInt(myParution.getText()) <= annee) {
+                        myTable.setValueAt(myParution.getText(), ligneSelectionnee, 5);
                     } else {
                         JOptionPane myPoPop = new JOptionPane();
                         myPoPop.showMessageDialog(null, "La date de parution ne pourra pas être supérieure à l’année du système");
@@ -411,6 +420,33 @@ public class Main extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
 
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        myAboutMenu.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JOptionPane myPoPop2 = new JOptionPane();
+                myPoPop2.showMessageDialog(null, "Dernière version par Yuyuan , Tania et Teddy");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
             }
 
             @Override
