@@ -6,6 +6,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +22,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.Calendar;
 import java.util.Enumeration;
 
 public class Main extends JFrame {
@@ -111,6 +114,24 @@ public class Main extends JFrame {
         myTable.setFillsViewportHeight(true);
 
 
+
+        myTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int lingeSelectionne = myTable.getSelectedRow();
+
+                myTitle.setText(myTable.getValueAt(lingeSelectionne, 0).toString());
+                myAuteur.setText(myTable.getValueAt(lingeSelectionne, 1).toString());
+                myParution.setText(myTable.getValueAt(lingeSelectionne, 5).toString());
+                myColumn.setText(myTable.getValueAt(lingeSelectionne, 3).toString());
+                myRow.setText(myTable.getValueAt(lingeSelectionne, 4).toString());
+                myResume.setText(myTable.getValueAt(lingeSelectionne, 2).toString());
+
+
+
+
+            }
+        });
 
         myTable.setGridColor(Color.black);
         //myTable.setBackground(Color.gray);
@@ -267,17 +288,10 @@ public class Main extends JFrame {
             }
         });
 
-        myTable.addMouseListener(new MouseListener() {
+        myBtnValider.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                getRowCount();
-                JFileChooser myChooser = new JFileChooser();
-                FileNameExtensionFilter myfilter = new FileNameExtensionFilter("only .xml files" , ".xml");
-                myChooser.setFileFilter(myfilter);
-                myChooser.showOpenDialog(null);
-                File myFile = myChooser.getSelectedFile();
-                processXml(myFile);
             }
 
             @Override
@@ -287,6 +301,21 @@ public class Main extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                int ligneSelectionnee = myTable.getSelectedRow();
+                int year = Calendar.getInstance().get(Calendar.YEAR);
+
+                myTable.setValueAt(myColumn.getText(),ligneSelectionnee,3);
+                myTable.setValueAt(myRow.getText(),ligneSelectionnee,4);
+                myTable.setValueAt(myParution.getText(),ligneSelectionnee,5);
+
+                if(Integer.parseInt(myColumn.getText()) > 0 && Integer.parseInt(myColumn.getText()) < 8){
+                    myTable.setValueAt(myColumn.getText(),ligneSelectionnee, 3);
+                }
+                else {
+                    JOptionPane myPoPop = new JOptionPane();
+                    myPoPop.showMessageDialog(null,"Selectionner un chiffre entre 1 et 7");
+                }
+
 
             }
 
@@ -304,6 +333,7 @@ public class Main extends JFrame {
         }
 
 
+
     public int getRowCount() {
         return tableauDonnees.length;
     }
@@ -316,6 +346,7 @@ public class Main extends JFrame {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return tableauDonnees[rowIndex][columnIndex];
     }
+
 
 
     private void processXml(File myFile){
@@ -366,6 +397,7 @@ public class Main extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
 
 
